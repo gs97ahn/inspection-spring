@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import nogamsung.inspectionspring.common.DefaultResDto;
 import nogamsung.inspectionspring.service.InspectionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,45 +18,31 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Api(tags = "Inspection")
 @RestController
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class InspectionController {
 
     private final InspectionService inspectionService;
 
-    @ApiOperation("KR Message")
+    @ApiOperation("Message")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "503", description = "ONGOING_INSPECTION",
                     content = @Content(schema = @Schema(implementation = Object.class)))
     })
-    @GetMapping("/kr")
+    @RequestMapping(value = {"/**", "/**/**", "/**/**/**",
+            "/**/**/**/**", "/**/**/**/**/**", "/**/**/**/**/**/**",
+            "/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**/**",
+            "/**/**/**/**/**/**/**/**/**/**"})
     @ResponseStatus(SERVICE_UNAVAILABLE)
-    public ResponseEntity<DefaultResDto<Object>> msgInKr() {
+    public ResponseEntity<DefaultResDto<Object>> sendInspectionMessage() {
 
-        String msg = inspectionService.krInspectionMessage();
+        String enMsg = inspectionService.enInspectionMessage();
+        String krMsg = inspectionService.krInspectionMessage();
 
         return ResponseEntity.status(SERVICE_UNAVAILABLE)
                 .body(DefaultResDto.builder()
                         .responseCode("ONGOING_INSPECTION")
-                        .responseMessage(msg)
-                        .build());
-    }
-
-    @ApiOperation("EN Message")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "503", description = "ONGOING_INSPECTION",
-                    content = @Content(schema = @Schema(implementation = Object.class)))
-    })
-    @GetMapping("/en")
-    @ResponseStatus(SERVICE_UNAVAILABLE)
-    public ResponseEntity<DefaultResDto<Object>> msgInEn() {
-
-        String msg = inspectionService.enInspectionMessage();
-
-        return ResponseEntity.status(SERVICE_UNAVAILABLE)
-                .body(DefaultResDto.builder()
-                        .responseCode("ONGOING_INSPECTION")
-                        .responseMessage(msg)
+                        .responseMessageEn(enMsg)
+                        .responseMessageKr(krMsg)
                         .build());
     }
 }
