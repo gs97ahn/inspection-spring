@@ -1,0 +1,38 @@
+name: Master Push - CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Grant execute permission for Gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+        env:
+          INSPECTION_BEGIN_AT_KST: ${{ secrets.INSPECTION_BEGIN_AT_KST }}
+          INSPECTION_BEGIN_AT_PST: ${{ secrets.INSPECTION_BEGIN_AT_PST }}
+          INSPECTION_END_AT_KST: ${{ secrets.INSPECTION_END_AT_KST }}
+          INSPECTION_END_AT_PST: ${{ secrets.INSPECTION_END_AT_PST }}
+
+      - name: Build and push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v6
+        with:
+          image: gs97ahn/server
+          tags: inspection-master-latest, inspection-1.0.0
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password : ${{ secrets.DOCKER_PASSWORD }}
