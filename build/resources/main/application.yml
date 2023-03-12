@@ -1,8 +1,4 @@
-
-project-name:
-  kr: ${PROJECT_NAME_KR}
-  en: ${PROJECT_NAME_EN}
-
+# Time
 time:
   kst:
     inspection-begin-at: ${INSPECTION_BEGIN_AT_KST}

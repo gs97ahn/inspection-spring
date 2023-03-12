@@ -6,12 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class InspectionService {
 
-    @Value("${project-name.kr}")
-    private String projectNameKr;
-
-    @Value("${project-name.en}")
-    private String projectNameEn;
-
     @Value("${time.kst.inspection-begin-at}")
     private String kstBeginAt;
 
@@ -25,13 +19,13 @@ public class InspectionService {
     private String pstEndAt;
 
     public String krInspectionMessage() {
-        return projectNameKr + "는 현재 서버 점검으로 인해 서비스 이용이 어렵습니다. 예상 점검 시간은 " +
+        return "현재 서버 점검으로 인해 서비스 이용이 어렵습니다. 예상 점검 시간은 " +
                 kstBeginAt + " ~ " + kstEndAt +
                 " 입니다.";
     }
 
     public String enInspectionMessage() {
-        return projectNameEn + " is currently on a server inspection. The estimated inspection time is " +
+        return "A server inspection is ongoing. The estimated inspection time is " +
                 pstBeginAt + " ~ " + pstEndAt +
                 " PST.";
     }
