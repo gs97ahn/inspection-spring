@@ -19,6 +19,7 @@ import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 @Api(tags = "Inspection")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class InspectionController {
 
     private final InspectionService inspectionService;
@@ -30,8 +31,7 @@ public class InspectionController {
     })
     @RequestMapping(value = {"/**", "/**/**", "/**/**/**",
             "/**/**/**/**", "/**/**/**/**/**", "/**/**/**/**/**/**",
-            "/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**/**",
-            "/**/**/**/**/**/**/**/**/**/**"})
+            "/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**/**"})
     @ResponseStatus(SERVICE_UNAVAILABLE)
     public ResponseEntity<DefaultResDto<Object>> sendInspectionMessage() {
 
