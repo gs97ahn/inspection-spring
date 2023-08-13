@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Api(tags = "Inspection")
@@ -33,16 +35,17 @@ public class InspectionController {
             "/**/**/**/**", "/**/**/**/**/**", "/**/**/**/**/**/**",
             "/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**", "/**/**/**/**/**/**/**/**/**"})
     @ResponseStatus(SERVICE_UNAVAILABLE)
-    public ResponseEntity<DefaultResDto<Object>> sendInspectionMessage() {
+    public ResponseEntity<DefaultResDto<Object>> sendInspectionMessage(HttpServletRequest servletRequest) {
 
-        String enMsg = inspectionService.enInspectionMessage();
-        String krMsg = inspectionService.krInspectionMessage();
+        String acceptLanguage = servletRequest.getHeader("Accept-Language");
+
+        String msg = inspectionService.generateMessage(acceptLanguage);
+
 
         return ResponseEntity.status(SERVICE_UNAVAILABLE)
                 .body(DefaultResDto.builder()
                         .responseCode("ONGOING_INSPECTION")
-                        .responseMessageEn(enMsg)
-                        .responseMessageKr(krMsg)
+                        .responseMessage(msg)
                         .build());
     }
 }

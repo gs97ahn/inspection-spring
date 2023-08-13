@@ -3,7 +3,3 @@ time:
   kst:
     inspection-begin-at: ${INSPECTION_BEGIN_AT_KST}
     inspection-end-at: ${INSPECTION_END_AT_KST}
-
-  pst:
-    inspection-begin-at: ${INSPECTION_BEGIN_AT_PST}
-    inspection-end-at: ${INSPECTION_END_AT_PST}

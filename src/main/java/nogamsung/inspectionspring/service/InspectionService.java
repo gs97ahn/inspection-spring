@@ -12,21 +12,39 @@ public class InspectionService {
     @Value("${time.kst.inspection-end-at}")
     private String kstEndAt;
 
-    @Value("${time.pst.inspection-begin-at}")
-    private String pstBeginAt;
+    public String generateMessage(String acceptLanguage) {
+        String message = "";
 
-    @Value("${time.pst.inspection-end-at}")
-    private String pstEndAt;
+        if (acceptLanguage.isBlank()) {
+            if (kstBeginAt.isBlank() || kstBeginAt.equals("NULL")) {
+                message = "현재 서비스 오류로 인해 서비스 이용이 어렵습니다. 잠시 후에 시도해 주세요.";
+            } else {
+                message = "현재 서버 점검으로 인해 서비스 이용이 어렵습니다. 예상 점검 시간은 " +
+                        kstBeginAt + " ~ " + kstEndAt + " 입니다.";
+            }
+        } else if (acceptLanguage.contains("en")) {
+            if (kstBeginAt.isBlank() || kstBeginAt.equals("NULL")) {
+                message = "Service is unavailable due to unexpected error. Please try again later.";
+            } else {
+                message = "Inspection is ongoing. The estimated inspection time is " +
+                        calculatePst(kstBeginAt) + " ~ " + calculatePst(kstEndAt) + " PST.";
+            }
+        } else {
+            if (kstBeginAt.isBlank() || kstBeginAt.equals("NULL")) {
+                message = "현재 서비스 오류로 인해 서비스 이용이 어렵습니다. 잠시 후에 시도해 주세요.";
+            } else {
+                message = "현재 서버 점검으로 인해 서비스 이용이 어렵습니다. 예상 점검 시간은 " +
+                        kstBeginAt + " ~ " + kstEndAt + " 입니다.";
+            }
+        }
 
-    public String krInspectionMessage() {
-        return "현재 서버 점검으로 인해 서비스 이용이 어렵습니다. 예상 점검 시간은 " +
-                kstBeginAt + " ~ " + kstEndAt +
-                " 입니다.";
+        return message;
     }
 
-    public String enInspectionMessage() {
-        return "A server inspection is ongoing. The estimated inspection time is " +
-                pstBeginAt + " ~ " + pstEndAt +
-                " PST.";
+    private String calculatePst(String kst) {
+        String pstH = kst.substring(0, 2);
+        String pstM = kst.substring(3, 5);
+
+        return pstH + ":" + pstM;
     }
 }
