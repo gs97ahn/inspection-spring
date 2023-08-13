@@ -42,8 +42,11 @@ public class InspectionService {
     }
 
     private String calculatePst(String kst) {
-        String pstH = kst.substring(0, 2);
-        String pstM = kst.substring(3, 5);
+        int pstH = Integer.parseInt(kst.substring(0, 2)) - 16;
+        int pstM = Integer.parseInt(kst.substring(3, 5));
+
+        if (pstH < 0)
+            pstH = pstH + 24;
 
         return pstH + ":" + pstM;
     }
