@@ -15,7 +15,7 @@ public class InspectionService {
     public String generateMessage(String acceptLanguage) {
         String message;
 
-        if (acceptLanguage.isBlank()) {
+        if (acceptLanguage == null || acceptLanguage.isBlank()) {
             if (kstBeginAt.isBlank() || kstBeginAt.equals("NULL")) {
                 message = "현재 서비스 오류로 인해 서비스 이용이 어렵습니다. 잠시 후에 시도해 주세요.";
             } else {
