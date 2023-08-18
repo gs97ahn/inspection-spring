@@ -13,7 +13,7 @@ public class InspectionService {
     private String kstEndAt;
 
     public String generateMessage(String acceptLanguage) {
-        String message = "";
+        String message;
 
         if (acceptLanguage.isBlank()) {
             if (kstBeginAt.isBlank() || kstBeginAt.equals("NULL")) {
